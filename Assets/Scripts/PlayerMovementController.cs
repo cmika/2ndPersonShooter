@@ -11,18 +11,19 @@ public class PlayerMovementController : MonoBehaviour {
 		v = Vector3.zero;
 
 		if(Input.GetKey(KeyCode.W)) {
-			v += Vector3.forward;
+			v += Vector3.right;
 		}
 
 		if(Input.GetKey(KeyCode.S)) {
-			v += Vector3.back;
-		}
-
-		if(Input.GetKeyDown(KeyCode.Space)) {
-			//jump yo
+			v += Vector3.left; //test model oriented towards x+, unity forward was z+
 		}
 
 		v.Normalize();
+
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			v += Vector3.up * 50;
+			//jumping obviously doesn't work like this
+		}
 
 		rigidbody.AddRelativeForce(v * speed);
 
