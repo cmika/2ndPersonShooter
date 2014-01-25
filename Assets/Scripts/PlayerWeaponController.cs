@@ -16,15 +16,19 @@ public class PlayerWeaponController : MonoBehaviour {
 	public void Start() {
 		//grab ref to existing camera on game start
 		activeCamera = GameObject.Find("PlayerCamera");
+
+		firing = false;
 	}
 
 	public void Update() {
-		if(Input.GetKeyDown(KeyCode.Mouse0)){
+		if(Input.GetKeyDown(KeyCode.Mouse0) && !firing){
 			StartFiring();
 		}
 	}
 
 	public void StartFiring() {
+
+		firing = true;
 
 		Transform o = GameObject.Find("Torso").transform;
 
@@ -34,6 +38,8 @@ public class PlayerWeaponController : MonoBehaviour {
 		Vector3 v = o.TransformDirection(Vector3.left * 200);
 
 		activeProjectile.rigidbody.AddForce(v);
+
+
 	}
 
 	public void FinishFiring(Vector3 pos) {
@@ -41,5 +47,13 @@ public class PlayerWeaponController : MonoBehaviour {
 
 		activeCamera = (GameObject) Instantiate(prefabCamera, pos, Quaternion.identity);
 		activeCamera.GetComponent<CameraFollowBehaviour>().target = transform;
+
+		StartCoroutine(waitForAnim());
+	}
+
+	IEnumerator waitForAnim() {
+		yield return new WaitForSeconds(3.0f);
+
+		firing = false;
 	}
 }
