@@ -43,7 +43,7 @@ public class PlayerWeaponController : MonoBehaviour {
 	}
 
 	public void FailFiring() {
-
+		firing = false;
 	}
 
 	public void FinishFiring(Vector3 pos) {
