@@ -38,6 +38,6 @@ public class PlayerMovementController : MonoBehaviour {
 
 	IEnumerator jumpdelay() {
 		yield return new WaitForSeconds(0.5f);
-		rigidbody.AddRelativeForce(Vector3.up * 400);
+		rigidbody.AddRelativeForce(Vector3.up * 600);
 	}
 }
