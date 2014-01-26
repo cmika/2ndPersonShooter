@@ -30,7 +30,7 @@ public class PlayerWeaponController : MonoBehaviour {
 
 		firing = true;
 
-		Transform o = GameObject.Find("Torso").transform;
+		Transform o = GameObject.Find("Vertical_Head_Joint").transform;
 
 		//instantiate projectile at head bone position
 		activeProjectile = (GameObject) Instantiate(prefabProjectile, o.position, o.rotation);
