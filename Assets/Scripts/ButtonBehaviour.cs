@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ButtonBehaviour : MonoBehaviour {
 
 	public List<DoorBehaviour> targets;
+	public Material onmat;
 
 	void OnTriggerEnter() {
 
@@ -12,5 +13,7 @@ public class ButtonBehaviour : MonoBehaviour {
 		foreach (DoorBehaviour door in targets) {
 			door.Open();
 		}
+
+		renderer.material = onmat;
 	}
 }

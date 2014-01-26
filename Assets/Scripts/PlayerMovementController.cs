@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerMovementController : MonoBehaviour {
 
 	bool jumping;
-	float jumptimer;
 
 	Vector3 v;
 	public float speed = 5.0f;
@@ -14,10 +13,6 @@ public class PlayerMovementController : MonoBehaviour {
 		v = Vector3.zero;
 
 		if(Input.GetKey(KeyCode.W)) {
-			v += Vector3.right;
-		}
-
-		if(Input.GetKey(KeyCode.S)) {
 			v += Vector3.left; //test model oriented towards x+, unity forward was z+
 		}
 
@@ -25,22 +20,24 @@ public class PlayerMovementController : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.Space) && !jumping) {
 			jumping = true;
-			jumptimer = 0f;
-
-			v += Vector3.up * 200;
+			GetComponent<PlayerAnimationController>().StartJumping();
+			StartCoroutine("jumpdelay");
 		}
 
 		rigidbody.AddRelativeForce(v * speed);
 
 		transform.Rotate(Vector3.up, Input.GetAxis("Mouse X"));
+	}
 
-		if(jumping && jumptimer > 2f)
-		{
+	void OnCollisionEnter(Collision col) {
+		if(col.collider.gameObject.layer == 8){ //layer for jump-resetting platforms
+			jumping = false;
+			GetComponent<PlayerAnimationController>().StopJumping();
+		}
+	}
 
-			Debug.Log(Physics.RaycastAll(this.transform.position, -Vector3.up, 1.6f).Length);
-			Debug.DrawLine(this.transform.position, Vector3.down * 1.6f);
-		} else if(jumping) jumptimer += Time.deltaTime;
-
-		//Debug.Log(jumping + "|" + jumptimer);
+	IEnumerator jumpdelay() {
+		yield return new WaitForSeconds(0.5f);
+		rigidbody.AddRelativeForce(Vector3.up * 400);
 	}
 }
