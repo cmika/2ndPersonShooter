@@ -27,6 +27,95 @@ ZTest Always Cull Off ZWrite Off Fog { Mode Off } //Rendering settings
    o.uv = MultiplyUV (UNITY_MATRIX_TEXTURE0, v.texcoord.xy);
    return o; 
   }
+  
+  float4x4 closestTwoColors (float4 c) {
+  	// initial black
+  	float diffOne = c.r + c.g + c.b;
+  	float4 colorOne = float4(0.0, 0.0, 0.0, 0.0);
+  	
+  	// initial white 
+  	float diffTwo = 1.0 - c.r + 1.0 - c.g + 1.0 - c.b;
+  	float4 colorTwo = float4(1.0, 1.0, 1.0, 0.0);
+  	
+  	// fun time orange
+  	float temp = sqrt(pow(246.0/255.0 - c.r,2) + pow(117.0/255.0 - c.g,2) + pow(18.0/255.0 - c.b,2));
+  	float4 colorTemp = float4(246.0/255.0, 117.0/255.0 , 18.0/255.0, 0.0);
+  	
+  	if(diffOne > temp)
+  	{
+  		colorOne = colorTemp;
+  		diffOne = temp;
+  	}
+  	else if (diffTwo > temp)
+  	{
+  		colorTwo = colorTemp;
+  		diffTwo = temp;
+  	}
+  	
+  	// unique deals low prices green
+  	temp = sqrt(pow(26.0/255.0 - c.r,2) + pow(246.0/255.0 - c.g,2) + pow(18.0/255.0 - c.b,2));
+  	colorTemp = float4(26.0/255.0, 246.0/255.0 , 18.0/255.0, 0.0);
+  	
+  	if(diffOne > temp)
+  	{
+  		colorOne = colorTemp;
+  		diffOne = temp;
+  	}
+  	else if (diffTwo > temp)
+  	{
+  		colorTwo = colorTemp;
+  		diffTwo = temp;
+  	}
+  		
+  	// german rural misery chic grey
+  	//temp = sqrt(pow(84.0/255.0 - c.r,2) + pow(84.0/255.0 - c.g,2) + pow(84.0/255.0 - c.b,2));
+  	//colorTemp = float4(84.0/255.0, 84.0/255.0 , 84.0/255.0, 0.0);
+  		
+  	//if(diffOne > temp)
+  	//{
+  	//	colorOne = colorTemp;
+  	//	diffOne = temp;
+  	//}
+  	//else if (diffTwo > temp)
+  	//{
+  	//	colorTwo = colorTemp;
+  	//	diffTwo = temp;
+  	//}
+  	
+  	// 'the struggle' blue
+  	temp = sqrt(pow(26.0/255.0 - c.r,2) + pow(159.0/255.0 - c.g,2) + pow(238.0/255.0 - c.b,2));
+  	colorTemp = float4(26.0/255.0, 159.0/255.0 , 238.0/255.0, 0.0);
+  		
+  	if(diffOne > temp)
+  	{
+  		colorOne = colorTemp;
+  		diffOne = temp;
+  	}
+  	else if (diffTwo > temp)
+  	{
+  		colorTwo = colorTemp;
+  		diffTwo = temp;
+  	}
+  	
+  	// fuck you red
+  	temp = sqrt(pow(237.0/255.0 - c.r,2) + pow(24.0/255.0 - c.g,2) + pow(17.0/255.0 - c.b,2));
+  	colorTemp = float4(237.0/255.0, 24.0/255.0 , 17.0/255.0, 0.0);
+  		
+  	if(diffOne > temp)
+  	{
+  		colorOne = colorTemp;
+  		diffOne = temp;
+  	}
+  	else if (diffTwo > temp)
+  	{
+  		colorTwo = colorTemp;
+  		diffTwo = temp;
+  	}
+  		
+  	if(diffOne > diffTwo)
+  		return float4x4(colorOne, colorTwo, diffOne,0,0,0,diffTwo,0,0,0);
+ 	return float4x4(colorTwo, colorOne, diffTwo,0,0,0,diffOne,0,0,0);
+  } 
     
   sampler2D _MainTex; //Reference in Pass is necessary to let us use this variable in shaders
   float4x4 ditherfuck = float4x4( 1.0, 9.0, 3.0,11.0,
@@ -68,6 +157,16 @@ ZTest Always Cull Off ZWrite Off Fog { Mode Off } //Rendering settings
   } else {
   	dither = row[3];
   } 
+  float4x4 closeColors = closestTwoColors(orgCol);
+  
+  float gap = sqrt(pow(closeColors[0].r - closeColors[1].r,2) + pow(closeColors[0].g - closeColors[1].g,2) + pow(closeColors[0].b - closeColors[1].b,2));
+  
+  float ditherGap = gap*dither;
+ 
+  if(ditherGap > closeColors[2][0]) 
+  	return closeColors[1];
+  return closeColors[0];
+  
   
   // get the greyscale color
   float grey = (orgCol.r + orgCol.g + orgCol.b)/3.0;
