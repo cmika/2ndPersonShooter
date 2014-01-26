@@ -16,6 +16,10 @@ public class PlayerMovementController : MonoBehaviour {
 			v += Vector3.left; //test model oriented towards x+, unity forward was z+
 		}
 
+		if(Input.GetKey(KeyCode.S)) {
+			v += Vector3.right * 0.65f;
+		}
+
 		v.Normalize();
 
 		if(Input.GetKeyDown(KeyCode.Space) && !jumping) {
