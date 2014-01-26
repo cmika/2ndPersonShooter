@@ -35,10 +35,14 @@ public class PlayerWeaponController : MonoBehaviour {
 		//instantiate projectile at head bone position
 		activeProjectile = (GameObject) Instantiate(prefabProjectile, o.position, o.rotation);
 
-		Vector3 v = o.TransformDirection(Vector3.left * 200);
+		Vector3 v = o.TransformDirection(Vector3.left * 300);
 
 		activeProjectile.rigidbody.AddForce(v);
 
+
+	}
+
+	public void FailFiring() {
 
 	}
 
