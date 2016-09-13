@@ -14,6 +14,6 @@ public class ButtonBehaviour : MonoBehaviour {
 			door.Open();
 		}
 
-		renderer.material = onmat;
+		GetComponent<Renderer>().material = onmat;
 	}
 }

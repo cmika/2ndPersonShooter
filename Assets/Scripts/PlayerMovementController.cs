@@ -28,7 +28,7 @@ public class PlayerMovementController : MonoBehaviour {
 			StartCoroutine("jumpdelay");
 		}
 
-		rigidbody.AddRelativeForce(v * speed);
+		GetComponent<Rigidbody>().AddRelativeForce(v * speed);
 
 		transform.Rotate(Vector3.up, Input.GetAxis("Mouse X"));
 	}
@@ -42,6 +42,6 @@ public class PlayerMovementController : MonoBehaviour {
 
 	IEnumerator jumpdelay() {
 		yield return new WaitForSeconds(0.5f);
-		rigidbody.AddRelativeForce(Vector3.up * 600);
+		GetComponent<Rigidbody>().AddRelativeForce(Vector3.up * 600);
 	}
 }

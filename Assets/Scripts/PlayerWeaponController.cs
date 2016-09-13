@@ -37,7 +37,7 @@ public class PlayerWeaponController : MonoBehaviour {
 
 		Vector3 v = o.TransformDirection(Vector3.left * 300);
 
-		activeProjectile.rigidbody.AddForce(v);
+		activeProjectile.GetComponent<Rigidbody>().AddForce(v);
 
 
 	}

@@ -23,32 +23,32 @@ public class PlayerAnimationController : MonoBehaviour {
 
 
 	public void StartMoving() {
-		animation.Play("StartMoving");
+		GetComponent<Animation>().Play("StartMoving");
 		walking = walkingstate.starting;
 	}
 
 	public void StartCycling() {
-		animation.Stop();
+		GetComponent<Animation>().Stop();
 		//animation.Play("Moving"); //TEMPORARILY BROKEN
 		walking = walkingstate.cycle;
 	}
 
 	public void StopMoving() {
-		animation.Stop();
+		GetComponent<Animation>().Stop();
 		//animation.Play("StopMoving"); //TEMPORARILY BROKEN
 		walking = walkingstate.stopping;
 	}
 
 	public void ExitMoving() {
-		animation.Stop ();
+		GetComponent<Animation>().Stop ();
 		walking = walkingstate.idle;
 	}
 
 	public void StartJumping() {
-		animation.Stop();
+		GetComponent<Animation>().Stop();
 		walking = walkingstate.idle;
-		animation["Jump"].speed = 3;
-		animation.Play("Jump");
+		GetComponent<Animation>()["Jump"].speed = 3;
+		GetComponent<Animation>().Play("Jump");
 		jumping = jumpingstate.jumping;
 	}
 
@@ -73,7 +73,7 @@ public class PlayerAnimationController : MonoBehaviour {
 			break;
 		case walkingstate.starting:
 			StopMovingp();
-			if(animation["StartMoving"].normalizedTime > 0.95f){ //close enough
+			if(GetComponent<Animation>()["StartMoving"].normalizedTime > 0.95f){ //close enough
 				StartCycling();
 			}
 			break;
@@ -83,7 +83,7 @@ public class PlayerAnimationController : MonoBehaviour {
 		case walkingstate.stopping:
 			if(Input.GetKeyDown(KeyCode.W)){
 				StartMoving();
-			} else if (animation["StopMoving"].normalizedTime > 0.95){
+			} else if (GetComponent<Animation>()["StopMoving"].normalizedTime > 0.95){
 				ExitMoving();
 			}
 			break;
@@ -91,8 +91,8 @@ public class PlayerAnimationController : MonoBehaviour {
 
 
 		if(jumping == jumpingstate.jumping) {
-			if(animation["Jump"].normalizedTime >= 0.5f) {
-				animation["Jump"].normalizedTime = 0.5f;
+			if(GetComponent<Animation>()["Jump"].normalizedTime >= 0.5f) {
+				GetComponent<Animation>()["Jump"].normalizedTime = 0.5f;
 			}
 		}
 
